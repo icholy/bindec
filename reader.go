@@ -19,6 +19,18 @@ func (r Reader) Read(data []byte) (n int, err error) {
 	return r.R.Read(data)
 }
 
+func (r Reader) ReadData(data interface{}) error {
+	return binary.Read(r.R, r.order, data)
+}
+
+func (r Reader) ReadBytes(n int) ([]byte, error) {
+	buf := make([]byte, n)
+	if _, err := io.ReadFull(r.R, buf); err != nil {
+		return nil, err
+	}
+	return buf, nil
+}
+
 func (r Reader) ReadUint16() (uint16, error) {
 	var buf [2]byte
 	if _, err := io.ReadFull(r.R, buf[:]); err != nil {
