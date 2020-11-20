@@ -3,6 +3,7 @@ package bindec
 import (
 	"bufio"
 	"encoding/binary"
+	"fmt"
 	"io"
 )
 
@@ -21,6 +22,38 @@ func (d Decoder) Bytes(n int) ([]byte, error) {
 		return nil, err
 	}
 	return buf, nil
+}
+
+func (d Decoder) Int(bitSize int, order binary.ByteOrder) (int, error) {
+	switch bitSize {
+	case 16:
+		x, err := d.Int16(order)
+		return int(x), err
+	case 32:
+		x, err := d.Int32(order)
+		return int(x), err
+	case 64:
+		x, err := d.Int64(order)
+		return int(x), err
+	default:
+		return 0, fmt.Errorf("invalid bitSize: %d", bitSize)
+	}
+}
+
+func (d Decoder) Uint(bitSize int, order binary.ByteOrder) (uint, error) {
+	switch bitSize {
+	case 16:
+		x, err := d.Uint16(order)
+		return uint(x), err
+	case 32:
+		x, err := d.Uint32(order)
+		return uint(x), err
+	case 64:
+		x, err := d.Uint64(order)
+		return uint(x), err
+	default:
+		return 0, fmt.Errorf("invalid bitSize: %d", bitSize)
+	}
 }
 
 func (d Decoder) Uint16(order binary.ByteOrder) (uint16, error) {
