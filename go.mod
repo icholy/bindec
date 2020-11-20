@@ -1,3 +1,3 @@
-module github.com/icholy/binread
+module github.com/icholy/bindec
 
 go 1.15

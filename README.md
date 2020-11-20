@@ -1,9 +1,9 @@
-# binread
+# bindec
 
 > Helper type that wraps the `encoding/binary` package
 
 ``` go
-r := binread.NewReader(reader)
-size, _ := r.ReadInt16()
-header, _ := r.ReadBytes(int(size))
+dec := bindec.NewDecoder(reader)
+size, _ := dec.Int16()
+header, _ := dec.Bytes(int(size))
 ```
