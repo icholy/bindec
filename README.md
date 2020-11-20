@@ -4,6 +4,6 @@
 
 ``` go
 dec := bindec.NewDecoder(reader)
-size, _ := dec.Int16()
+size, _ := dec.Int16(nil)
 header, _ := dec.Bytes(int(size))
 ```
