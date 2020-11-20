@@ -8,11 +8,11 @@ import (
 
 type Decoder struct {
 	R     *bufio.Reader
-	Order binary.ByteOrder
+	order binary.ByteOrder
 }
 
 func NewDecoder(r io.Reader, order binary.ByteOrder) *Decoder {
-	return &Decoder{R: bufio.NewReader(r), Order: order}
+	return &Decoder{R: bufio.NewReader(r), order: order}
 }
 
 func (d Decoder) Bytes(n int) ([]byte, error) {
@@ -23,50 +23,68 @@ func (d Decoder) Bytes(n int) ([]byte, error) {
 	return buf, nil
 }
 
-func (d Decoder) Uint16() (uint16, error) {
+func (d Decoder) Uint16(order binary.ByteOrder) (uint16, error) {
 	var buf [2]byte
 	if _, err := io.ReadFull(d.R, buf[:]); err != nil {
 		return 0, err
 	}
-	return d.Order.Uint16(buf[:]), nil
+	if order == nil {
+		order = d.order
+	}
+	return order.Uint16(buf[:]), nil
 }
 
-func (d Decoder) Int16() (int16, error) {
+func (d Decoder) Int16(order binary.ByteOrder) (int16, error) {
 	var buf [2]byte
 	if _, err := io.ReadFull(d.R, buf[:]); err != nil {
 		return 0, err
 	}
-	return int16(d.Order.Uint16(buf[:])), nil
+	if order == nil {
+		order = d.order
+	}
+	return int16(order.Uint16(buf[:])), nil
 }
 
-func (d Decoder) Uint32() (uint32, error) {
+func (d Decoder) Uint32(order binary.ByteOrder) (uint32, error) {
 	var buf [4]byte
 	if _, err := io.ReadFull(d.R, buf[:]); err != nil {
 		return 0, err
 	}
-	return d.Order.Uint32(buf[:]), nil
+	if order == nil {
+		order = d.order
+	}
+	return order.Uint32(buf[:]), nil
 }
 
-func (d Decoder) Int32() (int32, error) {
+func (d Decoder) Int32(order binary.ByteOrder) (int32, error) {
 	var buf [4]byte
 	if _, err := io.ReadFull(d.R, buf[:]); err != nil {
 		return 0, err
 	}
-	return int32(d.Order.Uint32(buf[:])), nil
+	if order == nil {
+		order = d.order
+	}
+	return int32(order.Uint32(buf[:])), nil
 }
 
-func (d Decoder) Uint64() (uint64, error) {
+func (d Decoder) Uint64(order binary.ByteOrder) (uint64, error) {
 	var buf [8]byte
 	if _, err := io.ReadFull(d.R, buf[:]); err != nil {
 		return 0, err
 	}
-	return d.Order.Uint64(buf[:]), nil
+	if order == nil {
+		order = d.order
+	}
+	return order.Uint64(buf[:]), nil
 }
 
-func (d Decoder) Int64() (int64, error) {
+func (d Decoder) Int64(order binary.ByteOrder) (int64, error) {
 	var buf [8]byte
 	if _, err := io.ReadFull(d.R, buf[:]); err != nil {
 		return 0, err
 	}
-	return int64(d.Order.Uint64(buf[:])), nil
+	if order == nil {
+		order = d.order
+	}
+	return int64(order.Uint64(buf[:])), nil
 }
